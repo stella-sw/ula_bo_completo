@@ -30,25 +30,37 @@ entity adder_subtractor is
 end adder_subtractor;
 
 architecture behavior of adder_subtractor is
-  signal intermediary_carry : std_logic_vector(N downto 0);
-  signal chosen_B           : std_logic_vector(N - 1 downto 0);
+  signal c : std_logic_vector(N - 1 downto 0);
+  signal chosen_B, ext_CS : std_logic_vector(N - 1 downto 0);
 begin
 
-  chosen_B <= input_b when CS = '0' else
-    std_logic_vector(to_unsigned(not(input_b)) + 1); -- Lucas: não tá funcionando, vou usar o módulo de complemento de dois pra ficar mais supimpa
+    ext_CS <= (others => CS);
+    chosen_B <= input_b xor ext_CS;
 
-  iterator : for i in 0 to N - 1 generate
+    iterator : for i in 0 to N - 1 generate
+        internal : if i = 0 generate
+            fa : entity work.full_adder(circuito_logico)
+            port map
+            (
+                A    => input_a(i),
+                B    => chosen_B(i),
+                Cin  => CS,
+                S    => result(i),
+                Cout => c(i)
+            );
+        else generate
+            fa : entity work.full_adder(circuito_logico)
+            port map
+            (
+                A    => input_a(i),
+                B    => chosen_B(i),
+                Cin  => c(i-1),
+                S    => result(i),
+                Cout => c(i)
+            );
+        end generate internal;
+    end generate iterator;
 
-    adder : entity work.full_adder(circuito_logico)
-      port map
-      (
-        A    => input_a(i),
-        B    => chosen_B(i),
-        Cin  => intermediary_carry(i),
-        S    => result(i),
-        Cout => intermediary_carry(i + 1)
-      );
-  end generate;
-  -- lógica do overflow: (C_out do MSB) XOR (C_in do MSB)           lucas: não é o próprio msb??
-  overflow <= intermediary_carry(N);-- xor intermediary_carry(N - 1);
+    -- lógica do overflow: (C_out do MSB) XOR (C_in do MSB)
+    overflow <= c(N-1) xor c(N-2);
 end architecture behavior;

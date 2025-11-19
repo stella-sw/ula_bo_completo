@@ -45,6 +45,40 @@ begin
         assert(result="00000000000000000000000000001010")
         report "Fail 0" severity error;
 
+        input_a <= std_logic_vector(to_unsigned(10, input_a'length));
+        input_b <= std_logic_vector(to_unsigned(10, input_a'length));
+        wait for passo;
+        assert(result=std_logic_vector(to_unsigned(20, input_a'length)))
+        report "Fail 1" severity error;
+
+        input_a <= "01111111111111111111111111111111";
+        input_b <= "00000000000000000000000000000001";
+        wait for passo;
+        assert(overflow='1') -- overflow para positivos
+        report "Fail 2" severity error;
+
+        input_a <= "01111111111111111111111111111111";
+        input_b <= "00000000000000000000000000000001";
+        CS <= '1';
+        wait for passo;
+        assert(result="01111111111111111111111111111110")
+        report "Fail 3" severity error;
+
+        input_a <= "00000000000000000000000000000001";
+        input_b <= "00000000000000000000000000000101";
+        CS <= '1';
+        wait for passo;
+        assert(result=std_logic_vector(to_signed(-4, input_a'length)))
+        report "Fail 4" severity error;
+
+        input_a <= "10000000000000000000000000000000";
+        input_b <= "00000000000000000000000000000001";
+        CS <= '1';
+        wait for passo;
+        assert(overflow='1') -- overflow para negativos
+        report "Fail 5" severity error;
+
+
         wait for passo;
         assert false report "Test done." severity note;
         wait;
