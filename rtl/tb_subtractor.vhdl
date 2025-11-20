@@ -25,7 +25,7 @@ architecture tb of tb_subtractor is
 
 begin
 
-    DUV : entity work.adder(behavior)
+    DUV : entity work.subtractor(behavior)
         generic map(N => N)
         port map
         (

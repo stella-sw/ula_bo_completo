@@ -33,7 +33,7 @@ begin
   -- generate para instanciar full_adder apenas uma vez e conseguir somar genericamente
   interator : for i in 0 to N - 1 generate
 
-    adder : entity work.full_adder(circuito_logico)
+    fa : entity work.full_adder(circuito_logico)
       port map
       (
         A    => input_a(i),
