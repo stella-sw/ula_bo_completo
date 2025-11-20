@@ -1,7 +1,6 @@
 --------------------------------------------------
 --	Author:      Renato Noskoski Kissel
 --	Created:     Nov 14, 2025
---  Edited:      Nov 18, 2025 by Lucas Alves de Souza
 --
 --	Project:     Atividade Prática 3 - ULA
 --	Description: somador com entradas e sainda em std_logic_vector e std_logic
@@ -20,9 +19,8 @@ entity adder is
     input_a   : in std_logic_vector(N - 1 downto 0); -- entrada A com N bits com sinal
     input_b   : in std_logic_vector(N - 1 downto 0); -- entrada B com N bits com sinal
     result    : out std_logic_vector(N - 1 downto 0); -- saída da soma com sinal
-    carry_out : out std_logic -- carry de saida
-    --overflow  : out std_logic); -- overflow para checar erros    lucas: o próprio Cout é o overflow né?
-    );
+    carry_out : out std_logic; -- carry de saida
+    overflow  : out std_logic); -- overflow para checar erros
 end adder;
 
 architecture behavior of adder is
@@ -34,7 +32,7 @@ begin
   -- generate para instanciar full_adder apenas uma vez e conseguir somar genericamente
   interator : for i in 0 to N - 1 generate
 
-    fa : entity work.full_adder(circuito_logico)
+    adder : entity work.full_adder(circuito_logico)
       port map
       (
         A    => input_a(i),
@@ -46,7 +44,7 @@ begin
   end generate;
 
   -- lógica do overflow: (C_out do MSB) XOR (C_in do MSB)
-  --overflow  <= intermediary_carry(N) xor intermediary_carry(N - 1);
+  overflow  <= intermediary_carry(N) xor intermediary_carry(N - 1);
   carry_out <= intermediary_carry(N);
 
 end behavior;
