@@ -6,6 +6,7 @@
 --	Description: somador com entradas e sainda em std_logic_vector e std_logic
 --               carry_out e overflow são usados no circuito. O somador é de tamanho
 --               genérico e usar generate para fazer isso.
+--  Tested: 19 Nov, 2025 by Lucas Alves de Souza
 --------------------------------------------------
 
 library IEEE;
@@ -32,7 +33,7 @@ begin
   -- generate para instanciar full_adder apenas uma vez e conseguir somar genericamente
   interator : for i in 0 to N - 1 generate
 
-    adder : entity work.full_adder(circuito_logico)
+    fa : entity work.full_adder(circuito_logico)
       port map
       (
         A    => input_a(i),
