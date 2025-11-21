@@ -19,8 +19,8 @@ entity count_less_than_B is
     N : positive := 32 -- número de bits das entradas
   );
   port (
-    input_a : in signed(N - 1 downto 0); -- entrada A com N bits com sinal
-    input_b : in signed(N - 1 downto 0); -- entrada B com N bits com sinal
+    input_a : in STD_LOGIC_VECTOR(N - 1 downto 0); -- entrada A com N bits com sinal
+    input_b : in STD_LOGIC_VECTOR(N - 1 downto 0); -- entrada B com N bits com sinal
     result  : out std_logic -- saída
   );
 end count_less_than_B;
