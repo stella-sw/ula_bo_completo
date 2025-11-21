@@ -13,8 +13,8 @@ entity ula_bo is
   port (
     clk           : in std_logic; -- clock (sinal de relógio)
     in_operativo  : in bo_entradas;
-    in_comandos   : out bc_comandos;
-    out_status    : in status_bo;
+    in_comandos   : in bc_comandos;
+    out_status    : out status_bo;
     out_operativo : out bo_saidas);
 end entity ula_bo;
 
@@ -32,7 +32,7 @@ begin
     port map
     (
       clk    => clk,
-      enable => in_comandos.cA, --VERIFICARRRRRRRRRRRRR pq n é so isso fiz so para eu preciso para o meu 
+      enable => in_comandos.cA, --VERIFICARRRRRRRRRRRRR pq n é so isso, fiz so para eu preciso de "A" para o meu 
       d      => in_operativo.entA,
       q      => A);
   --registrador para passar B
@@ -45,7 +45,13 @@ begin
       enable => in_comandos.cB,
       d      => in_operativo.entB,
       q      => B);
-  -- renato
+  
+
+  -------------------------PARTE DO RENATO FINALIZADA---------------------------
+
+  --signals A(0) e A==0?
+  out_status.A_0 <= A(0);
+  out_status.Az <= '1' when unsigned(count_r) = 0 else '0';
 
   mux_6 : entity work.mux_2to1(behavior)
     generic map(
@@ -77,9 +83,8 @@ begin
       d      => result_mux7,
       q      => count_r);
 
-  if unsigned(count_r) = 0 then
-
-  end if;
+  --signal count == 0?
+  out_status.countz <= '1' when unsigned(count_r) = 0 else '0';
 
   mux_8 : entity work.mux_2to1(behavior)
     generic map(
@@ -91,5 +96,28 @@ begin
       in_1 => (0 => '1', others => '0'),
       s_mux => result_mux8);
 
+  sub: entity work.subtractor(behavior)
+  generic map(
+      N => N)
+    port map
+    (
+    input_a => count_r,
+    input_b  => result_mux8,
+    result    => result_count_r_less,
+    carry_out => open,
+    overflow => open);
+
+  count_less_than_B: entity work.count_less_than_B(behavior)
+  generic map(
+      N => N)
+    port map
+    (
+    input_a => count_r,
+    input_b  => B,
+    result    => out_status.AmqB);
+
+
   -- Lucas
+
+  --Lucas, o sinal que entra em M9 entrada 0 se chama "count_r". ass: Renato
 end architecture structure;

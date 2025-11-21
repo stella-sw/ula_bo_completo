@@ -54,7 +54,6 @@ package ula_pack is
   -- reset: reset assíncrono
   type bc_entradas is record
     iniciar : std_logic;
-    reset   : std_logic;
   end record bc_entradas;
 
   -- Tipo que armazena as saídas do Bloco de Controle
