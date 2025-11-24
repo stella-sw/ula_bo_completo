@@ -188,4 +188,6 @@ begin
   -- Lucas
 
   --Lucas, o sinal que entra em M9 entrada 0 se chama "count_r". ass: Renato
+  --Lucas, o sinal que entra em M10 entrada 1 se chama "result_mux2". ass: Madu
+
 end architecture structure;
