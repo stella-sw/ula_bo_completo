@@ -1,3 +1,11 @@
+--------------------------------------------------
+--	Author:      Marco Antonio Colla
+--	Created:     Nov 25, 2025
+--
+--	Project:     Atividade Prática 3 - ULA
+--	Description: Pequeno testbench para o and_or.
+--------------------------------------------------
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
